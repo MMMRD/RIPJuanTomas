@@ -331,6 +331,9 @@ a:focus-visible {
 	pointer-events: none;
 	position: fixed;
 	margin-top: 12px;
+	z-index: 102;
+    right: 20px;
+    top: 35px;
 }
 
 .content__back svg {
@@ -603,7 +606,7 @@ a:focus-visible {
 		max-width: none;
 		position: fixed;
 		height: 200px;
-		z-index: 1000;
+		z-index: 101;
 		padding: var(--page-padding);
 		pointer-events: none;
 		grid-template-columns: auto auto 1fr;

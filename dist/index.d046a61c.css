@@ -311,11 +311,14 @@ a:focus-visible {
   cursor: pointer;
   opacity: 0;
   pointer-events: none;
+  z-index: 102;
   grid-area: back;
   align-items: center;
   margin-top: 12px;
   display: flex;
   position: fixed;
+  top: 35px;
+  right: 20px;
 }
 
 .content__back svg {
@@ -569,7 +572,7 @@ a:focus-visible {
 
   .frame {
     text-align: left;
-    z-index: 1000;
+    z-index: 101;
     padding: var(--page-padding);
     pointer-events: none;
     grid-template: "logo . sponsor"
