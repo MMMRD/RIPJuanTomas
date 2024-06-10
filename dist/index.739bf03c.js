@@ -584,16 +584,996 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 }
 
 },{}],"ebWYT":[function(require,module,exports) {
+var _highlightEffectJs = require("./effect-1/highlightEffect.js");
+var _highlightEffectJs1 = require("./effect-2/highlightEffect.js");
+var _highlightEffectJs2 = require("./effect-3/highlightEffect.js");
+var _highlightEffectJs3 = require("./effect-4/highlightEffect.js");
+var _highlightEffectJs4 = require("./effect-5/highlightEffect.js");
+var _highlightEffectJs5 = require("./effect-6/highlightEffect.js");
+var _highlightEffectJs6 = require("./effect-7/highlightEffect.js");
+var _highlightEffectJs7 = require("./effect-8/highlightEffect.js");
+var _highlightEffectJs8 = require("./effect-9/highlightEffect.js");
+var _highlightEffectJs9 = require("./effect-10/highlightEffect.js");
+var _highlightEffectJs10 = require("./effect-11/highlightEffect.js");
+var _highlightEffectJs11 = require("./effect-12/highlightEffect.js");
+var _highlightEffectJs12 = require("./effect-13/highlightEffect.js");
+var _utilsJs = require("./utils.js");
 var _utils = require("./utils");
 var _slideshow = require("./slideshow");
 const slideshow = new (0, _slideshow.Slideshow)(document.querySelector(".stack"));
 // Preload images
 (0, _utils.preloadImages)(".stack__item").then((_)=>document.body.classList.remove("loading"));
+// Registers the ScrollTrigger and Flip plugins with GSAP
+// gsap.registerPlugin(ScrollTrigger, Flip);
+const highlightedElements = document.querySelectorAll(".hx");
+highlightedElements.forEach((el)=>{
+    // Exclude the 11th example (Flip example) by checking if the element has the class 'hx-11'
+    if (!el.classList.contains("hx-11")) el.dataset.splitting = "";
+});
+Splitting();
+const init = ()=>{
+    const effects = [
+        {
+            selector: ".hx-1",
+            effect: (0, _highlightEffectJs.HighlightEffect)
+        },
+        {
+            selector: ".hx-2",
+            effect: (0, _highlightEffectJs1.HighlightEffect)
+        },
+        {
+            selector: ".hx-3",
+            effect: (0, _highlightEffectJs2.HighlightEffect)
+        },
+        {
+            selector: ".hx-4",
+            effect: (0, _highlightEffectJs3.HighlightEffect)
+        },
+        {
+            selector: ".hx-5",
+            effect: (0, _highlightEffectJs4.HighlightEffect)
+        },
+        {
+            selector: ".hx-6",
+            effect: (0, _highlightEffectJs5.HighlightEffect)
+        },
+        {
+            selector: ".hx-7",
+            effect: (0, _highlightEffectJs6.HighlightEffect)
+        },
+        {
+            selector: ".hx-8",
+            effect: (0, _highlightEffectJs7.HighlightEffect)
+        },
+        {
+            selector: ".hx-9",
+            effect: (0, _highlightEffectJs8.HighlightEffect)
+        },
+        {
+            selector: ".hx-10",
+            effect: (0, _highlightEffectJs9.HighlightEffect)
+        },
+        {
+            selector: ".hx-11",
+            effect: (0, _highlightEffectJs10.HighlightEffect)
+        },
+        {
+            selector: ".hx-12",
+            effect: (0, _highlightEffectJs11.HighlightEffect)
+        },
+        {
+            selector: ".hx-13",
+            effect: (0, _highlightEffectJs12.HighlightEffect)
+        }
+    ];
+    // Iterate over each effect configuration and apply the effect to all matching elements
+    effects.forEach(({ selector, effect })=>{
+        document.querySelectorAll(selector).forEach((el)=>{
+            new effect(el);
+        });
+    });
+};
+// Preload images and fonts and remove loader
+(0, _utilsJs.preloadFonts)("sem5iwx").then(()=>{
+    document.body.classList.remove("loading");
+    init();
+});
 
-},{"./utils":"72Dku","./slideshow":"ao8JN"}],"72Dku":[function(require,module,exports) {
+},{"./effect-1/highlightEffect.js":"9Rp2y","./effect-2/highlightEffect.js":"dlq6D","./effect-3/highlightEffect.js":"1lMUQ","./effect-4/highlightEffect.js":"b1VAS","./effect-5/highlightEffect.js":"8V0X4","./effect-6/highlightEffect.js":"aq46q","./effect-7/highlightEffect.js":"fgBl4","./effect-8/highlightEffect.js":"1FuJp","./effect-9/highlightEffect.js":"7bDs8","./effect-10/highlightEffect.js":"9Qmjc","./effect-11/highlightEffect.js":"jnTt9","./effect-12/highlightEffect.js":"eIKgF","./effect-13/highlightEffect.js":"UeJqA","./utils.js":"72Dku","./utils":"72Dku","./slideshow":"ao8JN"}],"9Rp2y":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HighlightEffect", ()=>HighlightEffect);
+class HighlightEffect {
+    constructor(el){
+        // Validates the input element to ensure it's an HTML element.
+        if (!el || !(el instanceof HTMLElement)) throw new Error("Invalid element provided.");
+        this.highlightedElement = el;
+        this.highlightedChars = this.highlightedElement.querySelectorAll(".char");
+        // These are the .word Splitting outputs
+        this.highlightedWords = this.highlightedElement.querySelectorAll(".word");
+        this.animationDefaults = {
+            duration: 0.8,
+            ease: "power2"
+        };
+        // Calls the method to set up the initial effect.
+        this.initializeEffect(this.wrapElement);
+    }
+    // Sets up the initial effect on the provided element.
+    initializeEffect(element) {
+        gsap.set(this.highlightedElement, {
+            perspective: 500
+        });
+        gsap.set(this.highlightedWords, {
+            transformStyle: "preserve-3d"
+        });
+        // Scroll effect.
+        this.scroll();
+    }
+    // Defines the scroll effect logic for the element.
+    scroll() {
+        ScrollTrigger.create({
+            trigger: this.highlightedElement,
+            start: "top bottom",
+            onEnter: ()=>this.animateChars(),
+            onEnterBack: ()=>this.animateChars(),
+            // Reset the character's state when scrolling back past the element
+            onLeave: ()=>this.resetChars(),
+            onLeaveBack: ()=>this.resetChars()
+        });
+    }
+    animateChars() {
+        gsap.timeline({
+            defaults: this.animationDefaults
+        }).fromTo(this.highlightedChars, {
+            opacity: 0,
+            z: 300,
+            rotationX: ()=>-45
+        }, {
+            stagger: 0.04,
+            opacity: 1,
+            z: 0,
+            rotationX: 0
+        }, 0);
+    }
+    resetChars() {
+        gsap.killTweensOf(this.highlightedChars);
+        gsap.set(this.highlightedChars, {
+            opacity: 1,
+            z: 0,
+            rotationX: 0
+        });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || Object.prototype.hasOwnProperty.call(dest, key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"dlq6D":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HighlightEffect", ()=>HighlightEffect);
+class HighlightEffect {
+    constructor(el){
+        // Validates the input element to ensure it's an HTML element.
+        if (!el || !(el instanceof HTMLElement)) throw new Error("Invalid element provided.");
+        this.highlightedElement = el;
+        this.highlightedChars = this.highlightedElement.querySelectorAll(".char");
+        this.animationDefaults = {
+            duration: 0.6,
+            ease: "power1"
+        };
+        // Calls the method to set up the initial effect.
+        this.initializeEffect(this.wrapElement);
+    }
+    // Sets up the initial effect on the provided element.
+    initializeEffect(element) {
+        // Scroll effect.
+        this.scroll();
+    }
+    // Defines the scroll effect logic for the element.
+    scroll() {
+        ScrollTrigger.create({
+            trigger: this.highlightedElement,
+            start: "top bottom",
+            onEnter: ()=>this.animateChars(),
+            onEnterBack: ()=>this.animateChars(),
+            // Reset the character's state when scrolling back past the element
+            onLeave: ()=>this.resetChars(),
+            onLeaveBack: ()=>this.resetChars()
+        });
+    }
+    animateChars() {
+        this.highlightedChars.forEach((char, position)=>{
+            gsap.timeline({
+                defaults: this.animationDefaults
+            }).to(char, {
+                delay: position * 0.05,
+                opacity: 0,
+                repeat: 2,
+                yoyo: true
+            }).to(char, {
+                opacity: 1
+            });
+        });
+    }
+    resetChars() {
+        gsap.killTweensOf(this.highlightedChars);
+        // Reset character properties for a potential re-run of the animation
+        gsap.set(this.highlightedChars, {
+            opacity: 1
+        });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1lMUQ":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HighlightEffect", ()=>HighlightEffect);
+class HighlightEffect {
+    constructor(el){
+        // Validates the input element to ensure it's an HTML element.
+        if (!el || !(el instanceof HTMLElement)) throw new Error("Invalid element provided.");
+        this.highlightedElement = el;
+        this.highlightedChars = this.highlightedElement.querySelectorAll(".char");
+        // These are the .word Splitting outputs
+        this.animationDefaults = {
+            duration: 0.5,
+            ease: "power1"
+        };
+        // Calls the method to set up the initial effect.
+        this.initializeEffect(this.wrapElement);
+    }
+    // Sets up the initial effect on the provided element.
+    initializeEffect(element) {
+        // Scroll effect.
+        this.scroll();
+    }
+    // Defines the scroll effect logic for the element.
+    scroll() {
+        ScrollTrigger.create({
+            trigger: this.highlightedElement,
+            start: "top bottom",
+            onEnter: ()=>this.animateChars(),
+            onEnterBack: ()=>this.animateChars(),
+            // Reset the character's state when scrolling back past the element
+            onLeave: ()=>this.resetChars(),
+            onLeaveBack: ()=>this.resetChars()
+        });
+    }
+    animateChars() {
+        // Start the animation chain for the characters
+        gsap.timeline({
+            defaults: this.animationDefaults
+        }).set(this.highlightedChars, {
+            willChange: "transform, opacity, color, filter"
+        }) // seems to fix the flickering
+        .to(this.highlightedChars, {
+            stagger: 0.06,
+            opacity: 0,
+            scale: 0.8
+        }).to(this.highlightedChars, {
+            stagger: 0.06,
+            opacity: 1,
+            scale: 1,
+            color: getComputedStyle(this.highlightedElement).getPropertyValue("--color-highlight-end"),
+            startAt: {
+                filter: "drop-shadow(0px 0px 0px #ffdbf5)"
+            },
+            filter: "drop-shadow(0px 0px 20px #ffdbf5)"
+        }, this.animationDefaults.duration);
+    }
+    resetChars() {
+        gsap.killTweensOf(this.highlightedChars);
+        // Reset character properties for a potential re-run of the animation
+        gsap.set(this.highlightedChars, {
+            scale: 1,
+            opacity: 1,
+            color: "",
+            filter: "drop-shadow(0px 0px 0px #ffdbf5)"
+        });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"b1VAS":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HighlightEffect", ()=>HighlightEffect);
+class HighlightEffect {
+    constructor(el){
+        // Validates the input element to ensure it's an HTML element.
+        if (!el || !(el instanceof HTMLElement)) throw new Error("Invalid element provided.");
+        this.highlightedElement = el;
+        this.highlightedChars = this.highlightedElement.querySelectorAll(".char");
+        // These are the .word Splitting outputs
+        this.highlightedWords = this.highlightedElement.querySelectorAll(".word");
+        this.animationDefaults = {
+            duration: 0.3,
+            ease: "power3.in"
+        };
+        // Calls the method to set up the initial effect.
+        this.initializeEffect(this.wrapElement);
+    }
+    // Sets up the initial effect on the provided element.
+    initializeEffect(element) {
+        // Scroll effect.
+        this.scroll();
+    }
+    // Defines the scroll effect logic for the element.
+    scroll() {
+        ScrollTrigger.create({
+            trigger: this.highlightedElement,
+            start: "top bottom",
+            onEnter: ()=>this.animateChars(),
+            onEnterBack: ()=>this.animateChars(),
+            // Reset the character's state when scrolling back past the element
+            onLeave: ()=>this.resetChars(),
+            onLeaveBack: ()=>this.resetChars()
+        });
+    }
+    animateChars() {
+        // Start the animation chain for a character
+        gsap.timeline({
+            defaults: this.animationDefaults
+        }).set(this.highlightedChars, {
+            willChange: "transform, opacity, color"
+        }) // Prepare for animation
+        .to(this.highlightedChars, {
+            stagger: 0.05,
+            scale: 1.45,
+            color: getComputedStyle(this.highlightedElement).getPropertyValue("--color-highlight-end")
+        }).to(this.highlightedChars, {
+            duration: 0.4,
+            ease: "sine",
+            stagger: 0.05,
+            scale: 1,
+            color: getComputedStyle(this.highlightedElement).getPropertyValue("--color-highlight-end-alt")
+        }, this.animationDefaults.duration);
+    }
+    resetChars() {
+        gsap.killTweensOf(this.highlightedChars);
+        // Reset character properties for a potential re-run of the animation
+        gsap.set(this.highlightedChars, {
+            scale: 1,
+            color: ""
+        });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"8V0X4":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HighlightEffect", ()=>HighlightEffect);
+class HighlightEffect {
+    constructor(el){
+        // Validates the input element to ensure it's an HTML element.
+        if (!el || !(el instanceof HTMLElement)) throw new Error("Invalid element provided.");
+        this.highlightedElement = el;
+        this.highlightedChars = this.highlightedElement.querySelectorAll(".char");
+        this.animationDefaults = {
+            duration: 0.4,
+            ease: "power1"
+        };
+        // Calls the method to set up the initial effect.
+        this.initializeEffect(this.wrapElement);
+    }
+    // Sets up the initial effect on the provided element.
+    initializeEffect(element) {
+        // Scroll effect.
+        this.scroll();
+    }
+    // Defines the scroll effect logic for the element.
+    scroll() {
+        ScrollTrigger.create({
+            trigger: this.highlightedElement,
+            start: "top bottom",
+            onEnter: ()=>this.animateChars(),
+            onEnterBack: ()=>this.animateChars(),
+            // Reset the character's state when scrolling back past the element
+            onLeave: ()=>this.resetChars(),
+            onLeaveBack: ()=>this.resetChars()
+        });
+    }
+    animateChars() {
+        gsap.timeline({
+            defaults: this.animationDefaults
+        }).fromTo(this.highlightedChars, {
+            scale: 1.3,
+            opacity: 0
+        }, {
+            stagger: (pos)=>0.1 + 0.05 * pos,
+            scale: 1,
+            opacity: 1
+        }).fromTo(this.highlightedElement, {
+            "--after-scale": 0
+        }, {
+            duration: 0.8,
+            ease: "expo",
+            "--after-scale": 1
+        }, 0);
+    }
+    resetChars() {
+        gsap.killTweensOf([
+            this.highlightedChars,
+            this.highlightedElement
+        ]);
+        gsap.set(this.highlightedElement, {
+            "--after-scale": 0
+        });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"aq46q":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HighlightEffect", ()=>HighlightEffect);
+class HighlightEffect {
+    constructor(el){
+        // Validates the input element to ensure it's an HTML element.
+        if (!el || !(el instanceof HTMLElement)) throw new Error("Invalid element provided.");
+        this.highlightedElement = el;
+        this.highlightedChars = this.highlightedElement.querySelectorAll(".char");
+        this.animationDefaults = {
+            duration: 0.1,
+            ease: "sine"
+        };
+        // Calls the method to set up the initial effect.
+        this.initializeEffect(this.wrapElement);
+    }
+    // Sets up the initial effect on the provided element.
+    initializeEffect(element) {
+        // Scroll effect.
+        this.scroll();
+    }
+    // Defines the scroll effect logic for the element.
+    scroll() {
+        ScrollTrigger.create({
+            trigger: this.highlightedElement,
+            start: "top bottom",
+            onEnter: ()=>this.animateChars(),
+            onEnterBack: ()=>this.animateChars(),
+            // Reset the character's state when scrolling back past the element
+            onLeave: ()=>this.resetChars(),
+            onLeaveBack: ()=>this.resetChars()
+        });
+    }
+    animateChars() {
+        gsap.timeline({
+            defaults: this.animationDefaults
+        }).to(this.highlightedChars, {
+            stagger: (pos, _, arr)=>0.06 * (arr.length - 1 - pos),
+            opacity: 0
+        }).to(this.highlightedChars, {
+            stagger: (pos)=>0.2 + 0.05 * pos,
+            opacity: 1
+        }).fromTo(this.highlightedElement, {
+            "--after-width": "0%",
+            willChange: "height"
+        }, {
+            duration: 1,
+            ease: "power4",
+            "--after-width": getComputedStyle(this.highlightedElement).getPropertyValue("--after-width-final")
+        }, "<");
+    }
+    resetChars() {
+        gsap.killTweensOf([
+            this.highlightedChars,
+            this.highlightedElement
+        ]);
+        gsap.set(this.highlightedElement, {
+            "--after-width": "0%"
+        });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"fgBl4":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HighlightEffect", ()=>HighlightEffect);
+class HighlightEffect {
+    constructor(el){
+        // Validates the input element to ensure it's an HTML element.
+        if (!el || !(el instanceof HTMLElement)) throw new Error("Invalid element provided.");
+        this.highlightedElement = el;
+        this.highlightedChars = this.highlightedElement.querySelectorAll(".char");
+        this.animationDefaults = {
+            duration: 0.2,
+            ease: "sine"
+        };
+        // Calls the method to set up the initial effect.
+        this.initializeEffect(this.wrapElement);
+    }
+    // Sets up the initial effect on the provided element.
+    initializeEffect(element) {
+        // Scroll effect.
+        this.scroll();
+    }
+    // Defines the scroll effect logic for the element.
+    scroll() {
+        ScrollTrigger.create({
+            trigger: this.highlightedElement,
+            start: "top bottom",
+            onEnter: ()=>this.animateChars(),
+            onEnterBack: ()=>this.animateChars(),
+            // Reset the character's state when scrolling back past the element
+            onLeave: ()=>this.resetChars(),
+            onLeaveBack: ()=>this.resetChars()
+        });
+    }
+    animateChars() {
+        gsap.timeline({
+            defaults: this.animationDefaults
+        }).fromTo(this.highlightedChars, {
+            transformOrigin: "50% 80%",
+            scaleY: 0
+        }, {
+            stagger: (pos)=>0.2 + 0.05 * pos,
+            scaleY: 1
+        }).fromTo(this.highlightedElement, {
+            "--after-height": "0%",
+            willChange: "height"
+        }, {
+            duration: 0.7,
+            ease: "sine.inOut",
+            "--after-height": getComputedStyle(this.highlightedElement).getPropertyValue("--after-height-final")
+        }, "<");
+    }
+    resetChars() {
+        gsap.killTweensOf([
+            this.highlightedChars,
+            this.highlightedElement
+        ]);
+        gsap.set(this.highlightedElement, {
+            "--after-height": "0%"
+        });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1FuJp":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HighlightEffect", ()=>HighlightEffect);
+class HighlightEffect {
+    constructor(el){
+        // Validates the input element to ensure it's an HTML element.
+        if (!el || !(el instanceof HTMLElement)) throw new Error("Invalid element provided.");
+        this.highlightedElement = el;
+        this.highlightedWords = this.highlightedElement.querySelectorAll(".word");
+        this.animationDefaults = {
+            duration: 1.2,
+            ease: "elastic.out(0.7)"
+        };
+        // Calls the method to set up the initial effect.
+        this.initializeEffect(this.wrapElement);
+    }
+    // Sets up the initial effect on the provided element.
+    initializeEffect(element) {
+        gsap.set(this.highlightedWords, {
+            transformOrigin: "0% 50%"
+        });
+        // Scroll effect.
+        this.scroll();
+    }
+    // Defines the scroll effect logic for the element.
+    scroll() {
+        ScrollTrigger.create({
+            trigger: this.highlightedElement,
+            start: "top bottom",
+            onEnter: ()=>this.animateWords(),
+            onEnterBack: ()=>this.animateWords(),
+            // Reset the character's state when scrolling back past the element
+            onLeave: ()=>this.resetWords(),
+            onLeaveBack: ()=>this.resetWords()
+        });
+    }
+    animateWords() {
+        // Start the animation chain for a word
+        gsap.timeline({
+            defaults: this.animationDefaults
+        }).fromTo(this.highlightedWords, {
+            opacity: 0,
+            rotationZ: -30
+        }, {
+            stagger: 0.2,
+            opacity: 1,
+            rotationZ: 0,
+            color: getComputedStyle(this.highlightedElement).getPropertyValue("--color-highlight-end")
+        });
+    }
+    resetWords() {
+        gsap.killTweensOf(this.highlightedWords);
+        // Reset word properties for a potential re-run of the animation
+        gsap.set(this.highlightedWords, {
+            opacity: 1,
+            rotationZ: 0,
+            color: ""
+        });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"7bDs8":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HighlightEffect", ()=>HighlightEffect);
+class HighlightEffect {
+    constructor(el){
+        // Validates the input element to ensure it's an HTML element.
+        if (!el || !(el instanceof HTMLElement)) throw new Error("Invalid element provided.");
+        this.highlightedElement = el;
+        this.highlightedWord = this.highlightedElement.querySelector(".word");
+        this.highlightedChars = this.highlightedWord.querySelectorAll(".char");
+        this.animationDefaults = {
+            duration: 0.2,
+            ease: "sine"
+        };
+        // Calls the method to set up the initial effect.
+        this.initializeEffect(this.wrapElement);
+    }
+    // Sets up the initial effect on the provided element.
+    initializeEffect(element) {
+        // Duplicate .word
+        this.clone = this.highlightedWord.cloneNode(true);
+        this.highlightedWord.parentNode.appendChild(this.clone);
+        this.highlightedCharsClone = this.clone.querySelectorAll(".char");
+        // Scroll effect.
+        this.scroll();
+    }
+    // Defines the scroll effect logic for the element.
+    scroll() {
+        ScrollTrigger.create({
+            trigger: this.highlightedElement,
+            start: "top bottom",
+            onEnter: ()=>this.animateChars(),
+            onEnterBack: ()=>this.animateChars(),
+            // Reset the character's state when scrolling back past the element
+            onLeave: ()=>this.resetChars(),
+            onLeaveBack: ()=>this.resetChars()
+        });
+    }
+    animateChars() {
+        // Generate an array of random rotation values, one for each character
+        const rotations = Array.from(this.highlightedChars, ()=>gsap.utils.random(-45, 45));
+        gsap.timeline({
+            defaults: this.animationDefaults
+        }).fromTo(this.highlightedChars, {
+            opacity: 0,
+            yPercent: 80,
+            rotation: (pos)=>rotations[pos]
+        }, {
+            stagger: (pos)=>0.06 * pos,
+            opacity: 1,
+            yPercent: 0,
+            rotation: 0
+        }).to(this.highlightedCharsClone, {
+            duration: 1,
+            ease: "expo",
+            stagger: (pos)=>0.06 * pos,
+            xPercent: ()=>gsap.utils.random(-15, 15),
+            yPercent: ()=>gsap.utils.random(-130, -50),
+            rotation: (pos)=>-1 * rotations[pos],
+            scale: ()=>gsap.utils.random(1, 2),
+            opacity: 0
+        }, 0);
+    }
+    resetChars() {
+        gsap.killTweensOf([
+            this.highlightedChars,
+            this.highlightedCharsClone,
+            this.highlightedElement
+        ]);
+        gsap.set([
+            this.highlightedChars,
+            this.highlightedCharsClone
+        ], {
+            opacity: 1,
+            xPercent: 0,
+            yPercent: 0,
+            rotation: 0,
+            scale: 1
+        });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9Qmjc":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HighlightEffect", ()=>HighlightEffect);
+class HighlightEffect {
+    constructor(el){
+        // Validates the input element to ensure it's an HTML element.
+        if (!el || !(el instanceof HTMLElement)) throw new Error("Invalid element provided.");
+        this.highlightedElement = el;
+        this.highlightedChars = this.highlightedElement.querySelectorAll(".char");
+        this.animationDefaults = {
+            duration: 0.2,
+            ease: "power2.in"
+        };
+        // Calls the method to set up the initial effect.
+        this.initializeEffect(this.wrapElement);
+    }
+    // Sets up the initial effect on the provided element.
+    initializeEffect(element) {
+        // Scroll effect.
+        this.scroll();
+    }
+    // Defines the scroll effect logic for the element.
+    scroll() {
+        ScrollTrigger.create({
+            trigger: this.highlightedElement,
+            start: "top bottom",
+            onEnter: ()=>this.animateChars(),
+            onEnterBack: ()=>this.animateChars(),
+            // Reset the character's state when scrolling back past the element
+            onLeave: ()=>this.resetChars(),
+            onLeaveBack: ()=>this.resetChars()
+        });
+    }
+    animateChars() {
+        this.highlightedChars.forEach((char, position)=>{
+            gsap.timeline({
+                defaults: this.animationDefaults
+            }).fromTo(char, {
+                filter: "brightness(100%) drop-shadow(0px 0px 0px #ff0000)",
+                willChange: "filter"
+            }, {
+                delay: gsap.utils.random(0, 1),
+                repeat: 1,
+                yoyo: true,
+                filter: "brightness(300%) drop-shadow(0px 0px 50px #ff0000)"
+            });
+        });
+    }
+    resetChars() {
+        gsap.killTweensOf(this.highlightedChars);
+        // Reset character properties for a potential re-run of the animation
+        gsap.set(this.highlightedChars, {
+            opacity: 1
+        });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jnTt9":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HighlightEffect", ()=>HighlightEffect);
+class HighlightEffect {
+    constructor(el){
+        // Validates the input element to ensure it's an HTML element.
+        if (!el || !(el instanceof HTMLElement)) throw new Error("Invalid element provided.");
+        this.highlightedElement = el;
+        this.flipElementWrap = this.highlightedElement.closest(".content__inner").querySelector(".hx-flip");
+        this.flipElement = this.flipElementWrap.querySelector(".hx-flip__inner");
+        this.paragraph = this.highlightedElement.parentNode;
+        // Calls the method to set up the initial effect.
+        this.initializeEffect(this.wrapElement);
+    }
+    // Sets up the initial effect on the provided element.
+    initializeEffect(element) {
+        // Scroll effect.
+        this.scroll();
+    }
+    // Defines the scroll effect logic for the element.
+    scroll() {
+        // Temporarily capture the final state
+        gsap.set(this.flipElement, {
+            willChange: "filter",
+            filter: "blur(0px)"
+        });
+        this.highlightedElement.appendChild(this.flipElement);
+        const flipstate = Flip.getState([
+            this.flipElementWrap,
+            this.flipElement
+        ], {
+            props: "font-size, filter"
+        });
+        // Back to the original state
+        gsap.set(this.flipElement, {
+            filter: "blur(6px)"
+        });
+        this.highlightedElement.removeChild(this.flipElement);
+        this.flipElementWrap.appendChild(this.flipElement);
+        const scrollTrigger = {
+            trigger: this.flipElement,
+            start: "bottom bottom",
+            end: "+=100%",
+            scrub: true
+        };
+        // Create the Flip animation
+        Flip.to(flipstate, {
+            ease: "sine.inOut",
+            absoluteOnLeave: true,
+            scrollTrigger: scrollTrigger
+        }).fromTo(this.paragraph, {
+            scale: 0.9,
+            filter: "blur(3px)",
+            willChange: "filter"
+        }, {
+            ease: "sine.inOut",
+            scale: 1,
+            filter: "blur(0px)",
+            scrollTrigger: scrollTrigger
+        }, 0);
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"eIKgF":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HighlightEffect", ()=>HighlightEffect);
+class HighlightEffect {
+    constructor(el){
+        // Validates the input element to ensure it's an HTML element.
+        if (!el || !(el instanceof HTMLElement)) throw new Error("Invalid element provided.");
+        this.highlightedElement = el;
+        this.highlightedWord = this.highlightedElement.querySelector(".word");
+        this.highlightedChars = this.highlightedWord.querySelectorAll(".char");
+        this.animationDefaults = {
+            duration: 1.2,
+            ease: "expo"
+        };
+        // Calls the method to set up the initial effect.
+        this.initializeEffect(this.wrapElement);
+    }
+    // Sets up the initial effect on the provided element.
+    initializeEffect(element) {
+        // Number of times to duplicate .word
+        const duplicates = 8;
+        // Initialize an array to hold the .word clones
+        let clonedWords = [];
+        // Loop to create and append clones
+        for(let i = 0; i < duplicates; i++){
+            const clone = this.highlightedWord.cloneNode(true); // Clone the element with all children
+            this.highlightedWord.parentNode.appendChild(clone);
+            clonedWords.push(clone);
+        }
+        // Store the cloned .char elements
+        this.highlightedWordClones = clonedWords;
+        // Scroll effect.
+        this.scroll();
+    }
+    // Defines the scroll effect logic for the element.
+    scroll() {
+        ScrollTrigger.create({
+            trigger: this.highlightedElement,
+            start: "top bottom",
+            onEnter: ()=>this.animateChars(),
+            onEnterBack: ()=>this.animateChars(),
+            // Reset the character's state when scrolling back past the element
+            onLeave: ()=>this.resetChars(),
+            onLeaveBack: ()=>this.resetChars()
+        });
+    }
+    animateChars() {
+        gsap.timeline({
+            defaults: this.animationDefaults
+        }).fromTo(this.highlightedWordClones, {
+            yPercent: 150,
+            opacity: 0
+        }, {
+            stagger: .15,
+            yPercent: 0,
+            opacity: 1
+        }).to(this.highlightedWordClones, {
+            stagger: .15,
+            opacity: 0,
+            duration: 0.01 // very short duration to mimic immediate set
+        }, this.animationDefaults.duration).to(this.highlightedWord, {
+            color: getComputedStyle(this.highlightedElement).getPropertyValue("--color-highlight-end")
+        }, this.animationDefaults.duration + .15 * this.highlightedWordClones.length - 1);
+    }
+    resetChars() {
+        gsap.killTweensOf([
+            this.highlightedWordClones,
+            this.highlightedWord
+        ]);
+        gsap.set([
+            this.highlightedWordClones
+        ], {
+            opacity: 0
+        });
+        gsap.set([
+            this.highlightedWord
+        ], {
+            color: ""
+        });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"UeJqA":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HighlightEffect", ()=>HighlightEffect);
+class HighlightEffect {
+    constructor(el){
+        // Validates the input element to ensure it's an HTML element.
+        if (!el || !(el instanceof HTMLElement)) throw new Error("Invalid element provided.");
+        this.highlightedElement = el;
+        this.selectMarker = this.highlightedElement.querySelector(".hx__select");
+        this.highlightedChars = this.highlightedElement.querySelectorAll(".char");
+        this.animationDefaults = {
+            duration: 0.4,
+            ease: "power1.inOut"
+        };
+        // Calls the method to set up the initial effect.
+        this.initializeEffect(this.wrapElement);
+    }
+    // Sets up the initial effect on the provided element.
+    initializeEffect(element) {
+        // Scroll effect.
+        this.scroll();
+    }
+    // Defines the scroll effect logic for the element.
+    scroll() {
+        ScrollTrigger.create({
+            trigger: this.highlightedElement,
+            start: "top bottom",
+            onEnter: ()=>this.animateChars(),
+            onEnterBack: ()=>this.animateChars(),
+            // Reset the character's state when scrolling back past the element
+            onLeave: ()=>this.resetChars(),
+            onLeaveBack: ()=>this.resetChars()
+        });
+    }
+    animateChars() {
+        gsap.timeline({
+            defaults: this.animationDefaults
+        }).fromTo(this.highlightedChars, {
+            willChange: "filter",
+            filter: "drop-shadow(0px 0px 0px #ffdbf5)"
+        }, {
+            stagger: 0.03,
+            filter: "drop-shadow(0px 0px 20px #ffdbf5)"
+        }).to(this.selectMarker, {
+            duration: 0.8,
+            ease: "expo",
+            "--select-width": getComputedStyle(this.highlightedElement).getPropertyValue("--select-width-final")
+        }, 0);
+    }
+    resetChars() {
+        gsap.killTweensOf([
+            this.highlightedChars,
+            this.selectMarker
+        ]);
+        gsap.set(this.selectMarker, {
+            "--select-width": "0%"
+        });
+        gsap.set(this.highlightedChars, {
+            filter: "drop-shadow(0px 0px 0px #ffdbf5)"
+        });
+    }
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"72Dku":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "preloadImages", ()=>preloadImages);
+parcelHelpers.export(exports, "preloadFonts", ()=>preloadFonts);
 const imagesLoaded = require("469e3acfa4a2d33e");
 /**
  * Preload images
@@ -603,6 +1583,19 @@ const imagesLoaded = require("469e3acfa4a2d33e");
         imagesLoaded(document.querySelectorAll(selector), {
             background: true
         }, resolve);
+    });
+};
+/**
+ * Preload fonts
+ * @param {String} id
+ */ const preloadFonts = (id)=>{
+    return new Promise((resolve)=>{
+        WebFont.load({
+            typekit: {
+                id: id
+            },
+            active: resolve
+        });
     });
 };
 
@@ -948,36 +1941,6 @@ const imagesLoaded = require("469e3acfa4a2d33e");
     };
     return EvEmitter;
 });
-
-},{}],"gkKU3":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, "__esModule", {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === "default" || key === "__esModule" || Object.prototype.hasOwnProperty.call(dest, key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
 
 },{}],"ao8JN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");

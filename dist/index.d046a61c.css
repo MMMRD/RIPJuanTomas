@@ -368,6 +368,200 @@ a:focus-visible {
   pointer-events: auto;
 }
 
+.hx {
+  color: var(--color-highlight-start);
+  white-space: nowrap;
+  background: none;
+  display: inline-block;
+  position: relative;
+}
+
+.hx-3 {
+  --color-highlight-end: #d686c1;
+}
+
+.hx-4 {
+  --color-highlight-end: #49af42;
+  --color-highlight-end-alt: #4252af;
+}
+
+.hx-5 {
+  --after-scale: 1;
+  --color-bg-highlight: #6a5ace;
+  --color-highlight-start: #e1def4;
+  display: inline-flex;
+}
+
+.hx-5:after {
+  content: "";
+  z-index: -1;
+  transform: scale3D(var(--after-scale), var(--after-scale), var(--after-scale));
+  background: var(--color-bg-highlight);
+  border-radius: 8px;
+  width: 105%;
+  position: absolute;
+  top: 10%;
+  bottom: -7.5%;
+  left: -2.5%;
+}
+
+.hx-6 {
+  --after-width: 0%;
+  --after-width-final: 105%;
+  --color-bg-highlight: #dc764c;
+  --color-highlight-start: #fadabd;
+  display: inline-flex;
+}
+
+.hx-6:after {
+  content: "";
+  z-index: -1;
+  width: var(--after-width);
+  background: var(--color-bg-highlight);
+  border-radius: 8px;
+  position: absolute;
+  top: 15%;
+  bottom: -10.5%;
+  left: -2.5%;
+}
+
+.hx-7 {
+  --after-height: 0%;
+  --after-height-final: 100%;
+  --color-bg-highlight: #437745;
+  --color-highlight-start: #d2f2d3;
+}
+
+.hx-7:after {
+  content: "";
+  z-index: -1;
+  height: var(--after-height);
+  background: var(--color-bg-highlight);
+  border-radius: 8px;
+  width: 105%;
+  position: absolute;
+  top: 10%;
+  left: -2.5%;
+}
+
+.hx-8 {
+  --color-highlight-end: #c3c58c;
+}
+
+.hx-9 {
+  --color-highlight-start: #544d499c;
+  --color-highlight-end: var(--color-text);
+}
+
+.hx-9 .word:first-child {
+  --color-highlight-end: #a86088;
+  color: var(--color-highlight-end);
+  position: absolute;
+}
+
+.hx-10 {
+  --color-highlight-start: var(--color-text);
+}
+
+.hx-10 .word {
+  position: absolute;
+}
+
+.hx-10 .word:last-child {
+  position: relative;
+}
+
+.hx-flip {
+  margin: 0;
+  font-size: clamp(2rem, 20vw, 22rem);
+  position: relative;
+}
+
+.hx-flip__inner, .hx-flip__placeholder {
+  color: inherit;
+  background: none;
+  font-weight: 200;
+  display: inline-block;
+}
+
+.hx-flip__placeholder, .hx__placeholder {
+  opacity: 0;
+}
+
+.hx-flip__inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.word, .word > .char {
+  display: inline-block;
+}
+
+.hx-12 {
+  --color-highlight-start: #544d499c;
+  --color-highlight-end: #fff;
+}
+
+.hx-12 .word:nth-child(n+2) {
+  --color-highlight-end: #fff;
+  color: var(--color-highlight-end);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.hx-13 {
+  --select-width: 0%;
+  --select-width-final: 103%;
+  --color-highlight-start: var(--color-text);
+  position: relative;
+}
+
+.hx__select {
+  width: var(--select-width);
+  mix-blend-mode: plus-lighter;
+  background: #6dd7e624;
+  height: 100%;
+  position: absolute;
+  top: 10%;
+  left: -1%;
+}
+
+.hx__select:before, .hx__select:after {
+  content: "";
+  background: url("select.32b8644d.svg") 0 0 / auto 100% no-repeat;
+  width: .155em;
+  height: calc(100% + .1275em);
+  position: absolute;
+  top: -.125em;
+  left: -.075em;
+}
+
+.hx__select:after {
+  inset: auto -.075em -.125em auto;
+  transform: scaleY(-1);
+}
+
+.container-loader {
+  z-index: 10000;
+  background-color: #000;
+  width: 100vw;
+  height: 100vh;
+  font-family: wayfinder-cf, serif;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 100;
+  position: fixed;
+}
+
+.container-loader .loader-button {
+  text-align: center;
+  width: 100%;
+  position: absolute;
+  bottom: 20px;
+}
+
 @media screen and (width >= 53em) {
   :root {
     --stack-margin: 50vh;

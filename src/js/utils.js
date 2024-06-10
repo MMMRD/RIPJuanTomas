@@ -10,6 +10,22 @@ const preloadImages = (selector = 'img') => {
     });
 };
 
+/**
+ * Preload fonts
+ * @param {String} id
+ */
+const preloadFonts = id => {
+    return new Promise((resolve) => {
+        WebFont.load({
+            typekit: {
+                id: id
+            },
+            active: resolve
+        });
+    });
+  };
+
 export {
-    preloadImages
+    preloadImages,
+    preloadFonts
 };

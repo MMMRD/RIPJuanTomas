@@ -11,24 +11,42 @@
 		<link rel="shortcut icon" href="favicon.ico">
 		<link rel="stylesheet" href="https://use.typekit.net/mai4fgw.css">
 		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<link rel="stylesheet" type="text/css" href="css/default.css" />
+		<link rel="stylesheet" type="text/css" href="css/component.css" />
+		<script src="js/modernizr.custom.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
 		<script>document.documentElement.className="js";var supportsCssVars=function(){var e,t=document.createElement("style");return t.innerHTML="root: { --tmp-var: bold; }",document.head.appendChild(t),e=!!(window.CSS&&window.CSS.supports&&window.CSS.supports("font-weight","var(--tmp-var)")),t.parentNode.removeChild(t),e};supportsCssVars()||alert("Please view this demo in a modern browser that supports CSS Variables.");</script>
 	</head>
 	<body class="demo-1 loading">
 		<main>
+			<div class="container-loader">	
+				<div class="os-phrases" id="os-phrases">
+					<h2>Juan Tomás Llibre</h2>
+					<h2>Un activista</h2>
+					<h2>Investigador</h2>
+					<h2>Ingeniero</h2>
+					<h2>En memoria</h2>
+					<h2>A su lucha</h2>
+					<h2>Por la libertad</h2>
+				</div>	
+				<div class="loader-button">
+					Presiona ESC para terminar
+				</div>
+			</div>
 			<div class="frame">
 				<div class="frame__logo">
 					<h2 class="frame__logo-title">Juan Tomas Llibre Miller</h2>
 					<span class="frame__logo-subtitle">(Q.E.P.D.)</span>
 				</div>
 			</div>
-			<div class="content">
-				<div class="content__item">
+			<div class="content" id="content">
+				<div class="content__item" id="content-item">
 					<h2 class="content__item-title">
 						<span class="oh"><span class="oh__inner">Nacimiento </span></span><span class="oh"><span class="oh__inner">Puerto Plata</span></span></h2>
 					<div class="content__item-description">
 						<p class="oh"><strong class="oh__inner">Puerto Plata, 1945</strong></p>
 						<p class="oh"><span class="oh__inner">
-							<b>¿Quién era Juan Llibre, el promotor de marihuana medicinal que murió en cárcel de Puerto Plata?</b>
+							<b>¿Quién era <mark class="hx hx-5">Juan Llibre</mark>, el promotor de marihuana medicinal que murió en cárcel de Puerto Plata?</b>
 							<br><br>
 							Juan Tomás Llibe Miller, mejor conocido como Juan Llibre, falleció el domingo producto de un infarto agudo al miocardio en el Centro de Corrección y Rehabilitación San Felipe de Puerto Plata, mientras se encontraba guardando medida de coerción por la posesión de 47 matas de marihuana en su residencia.
 							<br><br>
@@ -170,6 +188,21 @@
 				<span class="title__sub oh"><span class="oh__inner">1945 &mdash; 2024</span></span>
 			</div>
 		</main>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="js/jquery.lettering.js"></script>
+		<script>
+			$(document).ready(function() {
+				$("#os-phrases > h2").lettering('words').children("span").lettering().children("span").lettering(); 
+			})
+		</script>
+		<script src="js/gsap.min.js"></script>
+		<script src="js/splitting.min.js"></script>
+		<script src="js/ScrollTrigger.min.js"></script>
+		<script src="js/Flip.min.js"></script>
+		
+		<!-- Remove the following two lines if you don't want smooth scrolling -->
+		<script src="js/lenis.min.js"></script>
+		<script src="js/smoothscroll.js"></script>
 		<script type="module" src="js/index.js"></script>
 		<script src="https://tympanus.net/codrops/adpacks/cda_sponsor.js"></script>
 	</body>
