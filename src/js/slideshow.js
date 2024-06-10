@@ -88,9 +88,16 @@ export class Slideshow {
 		});
 
 		this.DOM.navArrows.next.addEventListener('click', () => {
+			console.log('here');
+			$(".content--open").animate({
+				scrollTop: 0
+			}, 300);
 			this.navigate('next');
 		});
 		this.DOM.navArrows.prev.addEventListener('click', () => {
+			$(".content--open").animate({
+				scrollTop: 0
+			}, 300);
 			this.navigate('prev');
 		});
 
