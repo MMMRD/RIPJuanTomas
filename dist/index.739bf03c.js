@@ -612,61 +612,23 @@ highlightedElements.forEach((el)=>{
 });
 Splitting();
 const init = ()=>{
-    const effects = [
-        {
-            selector: ".hx-1",
-            effect: (0, _highlightEffectJs.HighlightEffect)
-        },
-        {
-            selector: ".hx-2",
-            effect: (0, _highlightEffectJs1.HighlightEffect)
-        },
-        {
-            selector: ".hx-3",
-            effect: (0, _highlightEffectJs2.HighlightEffect)
-        },
-        {
-            selector: ".hx-4",
-            effect: (0, _highlightEffectJs3.HighlightEffect)
-        },
-        {
-            selector: ".hx-5",
-            effect: (0, _highlightEffectJs4.HighlightEffect)
-        },
-        {
-            selector: ".hx-6",
-            effect: (0, _highlightEffectJs5.HighlightEffect)
-        },
-        {
-            selector: ".hx-7",
-            effect: (0, _highlightEffectJs6.HighlightEffect)
-        },
-        {
-            selector: ".hx-8",
-            effect: (0, _highlightEffectJs7.HighlightEffect)
-        },
-        {
-            selector: ".hx-9",
-            effect: (0, _highlightEffectJs8.HighlightEffect)
-        },
-        {
-            selector: ".hx-10",
-            effect: (0, _highlightEffectJs9.HighlightEffect)
-        },
-        {
-            selector: ".hx-11",
-            effect: (0, _highlightEffectJs10.HighlightEffect)
-        },
-        {
-            selector: ".hx-12",
-            effect: (0, _highlightEffectJs11.HighlightEffect)
-        },
-        {
-            selector: ".hx-13",
-            effect: (0, _highlightEffectJs12.HighlightEffect)
-        }
-    ];
-    // Iterate over each effect configuration and apply the effect to all matching elements
+    /*
+  const effects = [
+    { selector: '.hx-1', effect: HighlightEffect1 },
+    { selector: '.hx-2', effect: HighlightEffect2 },
+    { selector: '.hx-3', effect: HighlightEffect3 },
+    { selector: '.hx-4', effect: HighlightEffect4 },
+    { selector: '.hx-5', effect: HighlightEffect5 },
+    { selector: '.hx-6', effect: HighlightEffect6 },
+    { selector: '.hx-7', effect: HighlightEffect7 },
+    { selector: '.hx-8', effect: HighlightEffect8 },
+    { selector: '.hx-9', effect: HighlightEffect9 },
+    { selector: '.hx-10', effect: HighlightEffect10 },
+    { selector: '.hx-11', effect: HighlightEffect11 },
+    { selector: '.hx-12', effect: HighlightEffect12 },
+    { selector: '.hx-13', effect: HighlightEffect13 },
+  ];
+  */ // Iterate over each effect configuration and apply the effect to all matching elements
     effects.forEach(({ selector, effect })=>{
         document.querySelectorAll(selector).forEach((el)=>{
             new effect(el);

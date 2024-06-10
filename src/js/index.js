@@ -34,6 +34,7 @@ highlightedElements.forEach(el => {
 Splitting();
 
 const init = () => {
+  /*
   const effects = [
     { selector: '.hx-1', effect: HighlightEffect1 },
     { selector: '.hx-2', effect: HighlightEffect2 },
@@ -49,6 +50,7 @@ const init = () => {
     { selector: '.hx-12', effect: HighlightEffect12 },
     { selector: '.hx-13', effect: HighlightEffect13 },
   ];
+  */
 
   // Iterate over each effect configuration and apply the effect to all matching elements
   effects.forEach(({ selector, effect }) => {

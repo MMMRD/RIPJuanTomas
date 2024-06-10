@@ -133,6 +133,7 @@ a:focus-visible {
 	position: relative;
 	position: absolute;
 	width: 100%;
+	background: linear-gradient(to bottom, black, transparent);
 }
 
 .frame__title {
@@ -283,8 +284,8 @@ a:focus-visible {
 .content__item {
 	grid-area: slides;
 	overflow: scroll;
-	position: absolute;
-	height: 0;
+	/*position: absolute;*/
+	height: 100vh;
 	opacity: 0;
 	pointer-events: none;
 }

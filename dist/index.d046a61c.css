@@ -114,6 +114,7 @@ a:focus-visible {
 .frame {
   z-index: 100;
   text-align: center;
+  background: linear-gradient(#000, #0000);
   width: 100%;
   padding: 1.5rem 5vw 0;
   position: absolute;
@@ -270,8 +271,7 @@ a:focus-visible {
   opacity: 0;
   pointer-events: none;
   grid-area: slides;
-  height: 0;
-  position: absolute;
+  height: 100vh;
   overflow: scroll;
 }
 

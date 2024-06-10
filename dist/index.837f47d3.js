@@ -49,7 +49,7 @@
     };
     setTimeout(()=>{
         $(".container-loader").hide();
-    }, 45000);
+    }, 40000);
     $(document).on("keydown", function(e) {
         console.log("pressed: ", e.key);
         if (e.key === "Escape") $(".container-loader").hide();
